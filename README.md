@@ -1,5 +1,5 @@
 # EasyAdapter
-An simpify version for hongyangAndroid [baseAdapter]. see https://github.com/hongyangAndroid/baseAdapter.
+An simplify version for hongyangAndroid [baseAdapter]. see https://github.com/hongyangAndroid/baseAdapter.
 
 I remove some wrappers, change some api, to be more simple.
 
