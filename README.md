@@ -4,8 +4,9 @@ An simplify version for hongyangAndroid [baseAdapter]. see https://github.com/ho
 I remove some wrappers, change some api, to be more simple.
 
 # Gradle
+[ ![Download](https://api.bintray.com/packages/li-xiaojun/jrepo/easyadapter/images/download.svg) ](https://bintray.com/li-xiaojun/jrepo/easyadapter/_latestVersion)
 ```groovy
-implementation 'com.lxj:easyadapter:0.0.1'
+implementation 'com.lxj:easyadapter:latest release'
 ```
 
 # Sample
