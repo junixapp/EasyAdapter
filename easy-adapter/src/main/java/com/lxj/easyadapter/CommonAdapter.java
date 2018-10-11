@@ -21,7 +21,7 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T>
         addItemViewDelegate(new ItemViewDelegate<T>()
         {
             @Override
-            public int getItemViewLayoutId()
+            public int getLayoutId()
             {
                 return layoutId;
             }

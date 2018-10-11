@@ -1,6 +1,5 @@
 package com.lxj.easyadapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemViewDelegate itemViewDelegate = mItemViewDelegateManager.getItemViewDelegate(viewType);
-        int layoutId = itemViewDelegate.getItemViewLayoutId();
+        int layoutId = itemViewDelegate.getLayoutId();
         ViewHolder holder = ViewHolder.createViewHolder(parent.getContext(), parent, layoutId);
         onViewHolderCreated(holder,holder.getConvertView());
         setListener(parent, holder, viewType);
@@ -114,5 +113,15 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public class SimpleOnItemClickListener implements OnItemClickListener{
+        @Override
+        public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {}
+
+        @Override
+        public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+            return false;
+        }
     }
 }

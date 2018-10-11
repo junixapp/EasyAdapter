@@ -7,7 +7,7 @@ package com.lxj.easyadapter;
 public interface ItemViewDelegate<T>
 {
 
-    int getItemViewLayoutId();
+    int getLayoutId();
 
     boolean isForViewType(T item, int position);
 
