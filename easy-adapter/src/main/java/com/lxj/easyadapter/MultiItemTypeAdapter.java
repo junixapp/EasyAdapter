@@ -115,7 +115,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public class SimpleOnItemClickListener implements OnItemClickListener{
+    public static class SimpleOnItemClickListener implements OnItemClickListener{
         @Override
         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {}
 

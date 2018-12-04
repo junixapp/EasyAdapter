@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
 import com.lxj.easyadapter.CommonAdapter;
+import com.lxj.easyadapter.MultiItemTypeAdapter;
 import com.lxj.easyadapter.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +30,19 @@ public class MainActivity extends AppCompatActivity {
             userList.add(new User("本杰明 - " + i, i * 2));
         }
 
-        recyclerView.setAdapter(new CommonAdapter<User>(R.layout.item, userList) {
+        CommonAdapter<User> commonAdapter = new CommonAdapter<User>(R.layout.item, userList) {
             @Override
             protected void convert(ViewHolder holder, User user, int position) {
                 holder.setText(R.id.tv_name, "name: " + user.name)
                         .setText(R.id.tv_age, "age: " + user.age);
             }
+        };
+        commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.SimpleOnItemClickListener(){
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                super.onItemClick(view, holder, position);
+            }
         });
+        recyclerView.setAdapter(commonAdapter);
     }
 }
