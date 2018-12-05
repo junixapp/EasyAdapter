@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lxj.easyadapter.CommonAdapter;
 import com.lxj.easyadapter.MultiItemTypeAdapter;
@@ -41,8 +43,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 super.onItemClick(view, holder, position);
+
             }
         });
-        recyclerView.setAdapter(commonAdapter);
+
+        final TextView textView = new TextView(this);
+        textView.setPadding(80,80,80,80);
+        textView.setText("header1");
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, textView.getText().toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        TextView textView2 = new TextView(this);
+        textView2.setPadding(80,80,80,80);
+        textView2.setText("header2");
+
+        commonAdapter.addHeaderView(textView);
+        commonAdapter.addHeaderView(textView2);
+        // 必须使用wrapper方法返回的adapter，否则无效
+        recyclerView.setAdapter(commonAdapter.wrapper());
     }
 }
