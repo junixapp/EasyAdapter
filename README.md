@@ -1,7 +1,7 @@
 # EasyAdapter
 An simplify version for hongyangAndroid [baseAdapter]. see https://github.com/hongyangAndroid/baseAdapter.
 
-I remove some wrappers, change some api, to be more simple.
+I remove some wrappers, change some api, to be more simple, support kotlin.
 
 # Gradle
 [ ![Download](https://api.bintray.com/packages/li-xiaojun/jrepo/easyadapter/images/download.svg) ](https://bintray.com/li-xiaojun/jrepo/easyadapter/_latestVersion)
@@ -10,6 +10,7 @@ implementation 'com.lxj:easyadapter:latest release'
 ```
 
 # Sample
+普通使用：
 ```java
 recyclerView.setAdapter(new CommonAdapter<User>(R.layout.item, userList) {
             @Override
@@ -20,3 +21,21 @@ recyclerView.setAdapter(new CommonAdapter<User>(R.layout.item, userList) {
         });
 ```
 
+添加header和footer：
+```java
+commonAdapter.addHeaderView(textView);
+commonAdapter.addHeaderView(textView2);
+// 必须使用wrapper方法返回的adapter，否则无效
+recyclerView.setAdapter(commonAdapter.wrapper());
+```
+
+条目点击：
+```
+commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.SimpleOnItemClickListener(){
+    @Override
+    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+        super.onItemClick(view, holder, position);
+
+    }
+});
+```
