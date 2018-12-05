@@ -27,6 +27,9 @@ commonAdapter.addHeaderView(textView);
 commonAdapter.addHeaderView(textView2);
 // 必须使用wrapper方法返回的adapter，否则无效
 recyclerView.setAdapter(commonAdapter.wrapper());
+
+// 使用commonAdapter的带有wrapper的更新方法
+commonAdapter.notifyWrapperDataSetChanged();
 ```
 
 条目点击：
