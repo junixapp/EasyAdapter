@@ -28,12 +28,12 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
             }
 
             @Override
-            public boolean isForViewType(T item, int position) {
+            public boolean isForViewType(@NonNull T item, int position) {
                 return true;
             }
 
             @Override
-            public void convert(ViewHolder holder, T t, int position) {
+            public void convert(@NonNull ViewHolder holder, @NonNull T t, int position) {
                 CommonAdapter.this.convert(holder, t, position);
             }
         });
