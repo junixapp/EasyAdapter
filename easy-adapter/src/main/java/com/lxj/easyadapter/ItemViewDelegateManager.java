@@ -77,8 +77,8 @@ public class ItemViewDelegateManager<T>
                 return delegates.keyAt(i);
             }
         }
-        throw new IllegalArgumentException(
-                "No ItemViewDelegate added that matches position=" + position + " in data source");
+//        throw new IllegalArgumentException(
+//                "No ItemViewDelegate added that matches position=" + position + " in data source");
     }
 
     public void convert(ViewHolder holder, T item, int position)
@@ -94,8 +94,8 @@ public class ItemViewDelegateManager<T>
                 return;
             }
         }
-        throw new IllegalArgumentException(
-                "No ItemViewDelegateManager added that matches position=" + position + " in data source");
+//        throw new IllegalArgumentException(
+//                "No ItemViewDelegateManager added that matches position=" + position + " in data source");
     }
 
 
