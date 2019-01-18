@@ -79,6 +79,7 @@ public class ItemViewDelegateManager<T>
         }
 //        throw new IllegalArgumentException(
 //                "No ItemViewDelegate added that matches position=" + position + " in data source");
+        return -1;
     }
 
     public void convert(ViewHolder holder, T item, int position)
