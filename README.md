@@ -42,3 +42,29 @@ commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.SimpleOnItemClickL
     }
 });
 ```
+
+多条目：
+```
+MultiItemTypeAdapter adapter = new MultiItemTypeAdapter<User>(userList)
+                .addItemViewDelegate(new OneDelegate())
+                .addItemViewDelegate(...);
+recyclerView.setAdapter(adapter);
+
+
+class OneDelegate implements ItemViewDelegate<User> {
+    @Override
+    public int getLayoutId() {
+        return 0;
+    }
+
+    @Override
+    public boolean isForViewType(@NonNull User item, int position) {
+        return false;
+    }
+
+    @Override
+    public void convert(@NonNull ViewHolder holder, @NonNull User user, int position) {
+
+    }
+}
+```

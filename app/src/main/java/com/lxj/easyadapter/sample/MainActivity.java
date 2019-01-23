@@ -1,6 +1,7 @@
 package com.lxj.easyadapter.sample;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lxj.easyadapter.CommonAdapter;
+import com.lxj.easyadapter.ItemViewDelegate;
+import com.lxj.easyadapter.ItemViewDelegateManager;
 import com.lxj.easyadapter.MultiItemTypeAdapter;
 import com.lxj.easyadapter.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        testHeader();
-
+        MultiItemTypeAdapter adapter = new MultiItemTypeAdapter<User>(userList)
+                .addItemViewDelegate(new OneDelegate());
+//                .addItemViewDelegate(...);
+        recyclerView.setAdapter(adapter);
     }
 
-    void testHeader(){
+    void testHeader() {
         CommonAdapter<User> commonAdapter = new CommonAdapter<User>(R.layout.item, userList) {
             @Override
             protected void convert(ViewHolder holder, User user, int position) {
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         .setText(R.id.tv_age, "age: " + user.age);
             }
         };
-        commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.SimpleOnItemClickListener(){
+        commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.SimpleOnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 super.onItemClick(view, holder, position);
@@ -53,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         final TextView textView = new TextView(this);
-        textView.setPadding(80,80,80,80);
+        textView.setPadding(80, 80, 80, 80);
         textView.setText("header1");
 
         textView.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +71,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView textView2 = new TextView(this);
-        textView2.setPadding(80,80,80,80);
+        textView2.setPadding(80, 80, 80, 80);
         textView2.setText("header2");
 
         commonAdapter.addHeaderView(textView);
         commonAdapter.addHeaderView(textView2);
         // 必须使用wrapper方法返回的adapter，否则无效
         recyclerView.setAdapter(commonAdapter.wrapper());
+    }
+
+    class OneDelegate implements ItemViewDelegate<User> {
+
+        @Override
+        public int getLayoutId() {
+            return 0;
+        }
+
+        @Override
+        public boolean isForViewType(@NonNull User item, int position) {
+            return false;
+        }
+
+        @Override
+        public void convert(@NonNull ViewHolder holder, @NonNull User user, int position) {
+
+        }
     }
 }
