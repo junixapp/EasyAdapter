@@ -1,5 +1,6 @@
 package com.lxj.easyadapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected OnItemClickListener mOnItemClickListener;
 
 
-    public MultiItemTypeAdapter( List<T> datas) {
+    public MultiItemTypeAdapter(List<T> datas) {
         mDatas = datas;
         mItemViewDelegateManager = new ItemViewDelegateManager();
     }
@@ -31,14 +32,17 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemViewDelegate itemViewDelegate = mItemViewDelegateManager.getItemViewDelegate(viewType);
+        if (itemViewDelegate == null)
+            return null;
+
         int layoutId = itemViewDelegate.getLayoutId();
         ViewHolder holder = ViewHolder.createViewHolder(parent.getContext(), parent, layoutId);
-        onViewHolderCreated(holder,holder.getConvertView());
+        onViewHolderCreated(holder, holder.getConvertView());
         setListener(parent, holder, viewType);
         return holder;
     }
 
-    public void onViewHolderCreated(ViewHolder holder,View itemView){
+    public void onViewHolderCreated(ViewHolder holder, View itemView) {
 
     }
 
@@ -58,7 +62,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
                     int position = viewHolder.getAdapterPosition();
-                    mOnItemClickListener.onItemClick(v, viewHolder , position);
+                    mOnItemClickListener.onItemClick(v, viewHolder, position);
                 }
             }
         });
@@ -106,21 +110,22 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, RecyclerView.ViewHolder holder, int position);
+        void onItemClick(@NonNull View view, @NonNull RecyclerView.ViewHolder holder, int position);
 
-        boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position);
+        boolean onItemLongClick(@NonNull View view, @NonNull RecyclerView.ViewHolder holder, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public static class SimpleOnItemClickListener implements OnItemClickListener{
+    public static class SimpleOnItemClickListener implements OnItemClickListener {
         @Override
-        public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {}
+        public void onItemClick(@NonNull View view, @NonNull RecyclerView.ViewHolder holder, int position) {
+        }
 
         @Override
-        public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+        public boolean onItemLongClick(@NonNull View view, @NonNull RecyclerView.ViewHolder holder, int position) {
             return false;
         }
     }

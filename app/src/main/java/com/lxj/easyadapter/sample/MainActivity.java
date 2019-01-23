@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
             userList.add(new User("本杰明 - " + i, i * 2));
         }
 
+
+//        testHeader();
+
+    }
+
+    void testHeader(){
         CommonAdapter<User> commonAdapter = new CommonAdapter<User>(R.layout.item, userList) {
             @Override
             protected void convert(ViewHolder holder, User user, int position) {
@@ -46,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         final TextView textView = new TextView(this);
         textView.setPadding(80,80,80,80);
         textView.setText("header1");

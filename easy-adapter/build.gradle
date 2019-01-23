@@ -32,7 +32,7 @@ publish {
     userOrg = 'li-xiaojun'
     groupId = 'com.lxj'
     artifactId = 'easyadapter'
-    publishVersion = '0.0.10'
+    publishVersion = '1.0.0'
     repoName = 'jrepo'
     desc = 'An simpify version for hongyangAndroid baseAdapter!'
     website = 'https://github.com/li-xiaojun/EasyAdapter'
