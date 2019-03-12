@@ -12,8 +12,6 @@ import java.util.List;
  */
 public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
     protected int mLayoutId;
-    protected List<T> mDatas;
-
     private HeaderAndFooterWrapper<T> wrapper;
 
     public CommonAdapter(final int layoutId, List<T> datas) {

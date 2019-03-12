@@ -37,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//        testHeader();
-        MultiItemTypeAdapter adapter = new MultiItemTypeAdapter<User>(userList)
-                .addItemViewDelegate(new OneDelegate());
+        testHeader();
+//        MultiItemTypeAdapter adapter = new MultiItemTypeAdapter<User>(userList)
+//                .addItemViewDelegate(new OneDelegate());
 //                .addItemViewDelegate(...);
-        recyclerView.setAdapter(adapter);
+//        recyclerView.setAdapter(adapter);
     }
 
     void testHeader() {
