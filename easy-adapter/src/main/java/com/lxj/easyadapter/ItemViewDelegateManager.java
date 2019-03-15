@@ -90,7 +90,7 @@ public class ItemViewDelegateManager<T>
 
             if (delegate.isForViewType( item, position))
             {
-                delegate.convert(holder, item, position);
+                delegate.bind(holder, item, position);
                 return;
             }
         }

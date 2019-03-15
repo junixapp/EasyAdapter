@@ -12,12 +12,11 @@ import java.util.List;
  */
 public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
     protected int mLayoutId;
-    private HeaderAndFooterWrapper<T> wrapper;
 
-    public CommonAdapter(final int layoutId, List<T> datas) {
-        super(datas);
+    public CommonAdapter(final int layoutId, List<T> data) {
+        super(data);
         mLayoutId = layoutId;
-        mDatas = datas;
+        mDatas = data;
 
         addItemViewDelegate(new ItemViewDelegate<T>() {
             @Override
@@ -31,39 +30,12 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
             }
 
             @Override
-            public void convert(@NonNull ViewHolder holder, @NonNull T t, int position) {
-                CommonAdapter.this.convert(holder, t, position);
+            public void bind(@NonNull ViewHolder holder, @NonNull T t, int position) {
+                CommonAdapter.this.bind(holder, t, position);
             }
         });
     }
 
-    protected abstract void convert(@NonNull ViewHolder holder, @NonNull T t, int position);
+    protected abstract void bind(@NonNull ViewHolder holder, @NonNull T t, int position);
 
-    public RecyclerView.Adapter wrapper() {
-        return wrapper == null ? this : wrapper;
-    }
-
-    public void notifyWrapperDataSetChanged() {
-        if (wrapper != null) {
-            wrapper.notifyDataSetChanged();
-        } else {
-            notifyDataSetChanged();
-        }
-    }
-
-    public void addHeaderView(View headerView) {
-        createWrapperIfNeed();
-        wrapper.addHeaderView(headerView);
-    }
-
-    public void addFooterView(View footerView) {
-        createWrapperIfNeed();
-        wrapper.addFootView(footerView);
-    }
-
-    private void createWrapperIfNeed() {
-        if (wrapper == null) {
-            wrapper = new HeaderAndFooterWrapper<>(this);
-        }
-    }
 }

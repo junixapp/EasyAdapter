@@ -1,6 +1,8 @@
 package com.lxj.easyadapter;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.SparseArrayCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,12 @@ import java.util.List;
  * Created by zhy on 16/4/9.
  */
 public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
+    private static final int BASE_ITEM_TYPE_HEADER = 100000;
+    private static final int BASE_ITEM_TYPE_FOOTER = 200000;
+
+    private SparseArrayCompat<View> mHeaderViews = new SparseArrayCompat<>();
+    private SparseArrayCompat<View> mFootViews = new SparseArrayCompat<>();
+
     protected List<T> mDatas;
 
     protected ItemViewDelegateManager mItemViewDelegateManager;
@@ -24,13 +32,26 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+        if (isHeaderViewPos(position)) {
+            return mHeaderViews.keyAt(position);
+        } else if (isFooterViewPos(position)) {
+            return mFootViews.keyAt(position - getHeadersCount() - getRealItemCount());
+        }
         if (!useItemViewDelegateManager()) return super.getItemViewType(position);
-        return mItemViewDelegateManager.getItemViewType(mDatas.get(position), position);
+        return mItemViewDelegateManager.getItemViewType(mDatas.get(position - getHeadersCount()), position - getHeadersCount());
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mHeaderViews.get(viewType) != null) {
+            ViewHolder holder = ViewHolder.createViewHolder(parent.getContext(), mHeaderViews.get(viewType));
+            return holder;
+
+        } else if (mFootViews.get(viewType) != null) {
+            ViewHolder holder = ViewHolder.createViewHolder(parent.getContext(), mFootViews.get(viewType));
+            return holder;
+        }
         ItemViewDelegate itemViewDelegate = mItemViewDelegateManager.getItemViewDelegate(viewType);
         if (itemViewDelegate == null)
             return null;
@@ -47,7 +68,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void convert(ViewHolder holder, T t) {
-        mItemViewDelegateManager.convert(holder, t, holder.getAdapterPosition());
+        mItemViewDelegateManager.convert(holder, t, holder.getAdapterPosition() - getHeadersCount());
     }
 
     protected boolean isEnabled(int viewType) {
@@ -61,7 +82,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
-                    int position = viewHolder.getAdapterPosition();
+                    int position = viewHolder.getAdapterPosition() - getHeadersCount();
                     mOnItemClickListener.onItemClick(v, viewHolder, position);
                 }
             }
@@ -71,7 +92,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
             @Override
             public boolean onLongClick(View v) {
                 if (mOnItemClickListener != null) {
-                    int position = viewHolder.getAdapterPosition();
+                    int position = viewHolder.getAdapterPosition() - getHeadersCount();
                     return mOnItemClickListener.onItemLongClick(v, viewHolder, position);
                 }
                 return false;
@@ -81,15 +102,74 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        convert(holder, mDatas.get(position));
+        if (isHeaderViewPos(position)) {
+            return;
+        }
+        if (isFooterViewPos(position)) {
+            return;
+        }
+        convert(holder, mDatas.get(position - getHeadersCount()));
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        WrapperUtils.onAttachedToRecyclerView(recyclerView, new WrapperUtils.SpanSizeCallback() {
+            @Override
+            public int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup oldLookup, int position) {
+                int viewType = getItemViewType(position);
+                if (mHeaderViews.get(viewType) != null) {
+                    return layoutManager.getSpanCount();
+                } else if (mFootViews.get(viewType) != null) {
+                    return layoutManager.getSpanCount();
+                }
+                if (oldLookup != null)
+                    return oldLookup.getSpanSize(position);
+                return 1;
+            }
+        });
+    }
+
+    @Override
+    public void onViewAttachedToWindow(ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        int position = holder.getLayoutPosition();
+        if (isHeaderViewPos(position) || isFooterViewPos(position)) {
+            WrapperUtils.setFullSpan(holder);
+        }
     }
 
     @Override
     public int getItemCount() {
         int itemCount = mDatas.size();
-        return itemCount;
+        return getHeadersCount() + getFootersCount() +itemCount;
+    }
+    private boolean isHeaderViewPos(int position) {
+        return position < getHeadersCount();
     }
 
+    private boolean isFooterViewPos(int position) {
+        return position >= getHeadersCount() + getRealItemCount();
+    }
+
+    private int getRealItemCount() {
+        return getItemCount() - getHeadersCount() - getFootersCount();
+    }
+    public void addHeaderView(View view) {
+        mHeaderViews.put(mHeaderViews.size() + BASE_ITEM_TYPE_HEADER, view);
+    }
+
+    public void addFootView(View view) {
+        mFootViews.put(mFootViews.size() + BASE_ITEM_TYPE_FOOTER, view);
+    }
+
+    public int getHeadersCount() {
+        return mHeaderViews.size();
+    }
+
+    public int getFootersCount() {
+        return mFootViews.size();
+    }
 
     public List<T> getDatas() {
         return mDatas;
