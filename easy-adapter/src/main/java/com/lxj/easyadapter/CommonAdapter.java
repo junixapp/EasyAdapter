@@ -66,4 +66,12 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
             wrapper = new HeaderAndFooterWrapper<>(this);
         }
     }
+
+    @Override
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        if(wrapper==null)
+            super.setOnItemClickListener(onItemClickListener);
+        else
+            wrapper.setOnItemClickListener(onItemClickListener);
+    }
 }

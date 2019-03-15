@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void testHeader() {
-        CommonAdapter<User> commonAdapter = new CommonAdapter<User>(R.layout.item, userList) {
+        final CommonAdapter<User> commonAdapter = new CommonAdapter<User>(R.layout.item, userList) {
             @Override
             protected void convert(ViewHolder holder, User user, int position) {
                 holder.setText(R.id.tv_name, "name: " + user.name)
@@ -56,26 +56,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 super.onItemClick(view, holder, position);
+                Toast.makeText(MainActivity.this, "item - "+position, Toast.LENGTH_LONG).show();
 
             }
         });
         final TextView textView = new TextView(this);
         textView.setPadding(80, 80, 80, 80);
-        textView.setText("header1");
+        textView.setText("点我添加一个元素");
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, textView.getText().toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.this, textView.getText().toString(), Toast.LENGTH_LONG).show();
+                userList.add(0, new User("李小姐", 100));
+                commonAdapter.notifyWrapperDataSetChanged();
             }
         });
 
         TextView textView2 = new TextView(this);
         textView2.setPadding(80, 80, 80, 80);
-        textView2.setText("header2");
+        textView2.setText("footer");
 
         commonAdapter.addHeaderView(textView);
-        commonAdapter.addHeaderView(textView2);
+        commonAdapter.addFooterView(textView2);
         // 必须使用wrapper方法返回的adapter，否则无效
         recyclerView.setAdapter(commonAdapter.wrapper());
     }
