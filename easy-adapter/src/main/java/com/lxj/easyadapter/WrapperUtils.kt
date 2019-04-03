@@ -9,10 +9,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager
  * Create by lxj, at 2018/12/5
  */
 object WrapperUtils {
-    interface SpanSizeCallback {
-        fun getSpanSize(layoutManager: GridLayoutManager, oldLookup: GridLayoutManager.SpanSizeLookup, position: Int): Int
-    }
-
     fun onAttachedToRecyclerView(recyclerView: RecyclerView, fn: (layoutManager: GridLayoutManager, oldLookup: GridLayoutManager.SpanSizeLookup, position: Int)->Int) {
         val layoutManager = recyclerView.layoutManager
         if (layoutManager is GridLayoutManager) {

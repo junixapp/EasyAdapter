@@ -4,14 +4,14 @@ package com.lxj.easyadapter
 /**
  * @param <T>
 </T> */
-abstract class EasyAdapter<T>(protected var mLayoutId: Int, data: List<T>) : MultiItemTypeAdapter<T>(data) {
+abstract class EasyAdapter<T>(data: List<T>, protected var mLayoutId: Int) : MultiItemTypeAdapter<T>(data) {
 
     init {
-        addItemViewDelegate(object : ItemViewDelegate<T> {
+        addItemDelegate(object : ItemDelegate<T> {
             override val layoutId: Int
                 get() = mLayoutId
 
-            override fun isForViewType(item: T, position: Int): Boolean {
+            override fun isThisType(item: T, position: Int): Boolean {
                 return true
             }
 

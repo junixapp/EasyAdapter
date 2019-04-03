@@ -1,7 +1,6 @@
 package com.lxj.easyadapter
 
 import android.support.v4.util.SparseArrayCompat
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +9,11 @@ import android.view.ViewGroup
  * Created by zhy on 16/4/9.
  */
 open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<ViewHolder>() {
-
+    
     private val mHeaderViews = SparseArrayCompat<View>()
     private val mFootViews = SparseArrayCompat<View>()
 
-    protected var mItemViewDelegateManager: ItemViewDelegateManager<T> = ItemViewDelegateManager()
+    protected var mItemDelegateManager: ItemDelegateManager<T> = ItemDelegateManager()
     protected var mOnItemClickListener: OnItemClickListener? = null
 
     private val realItemCount: Int
@@ -25,26 +24,25 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
 
     val footersCount: Int
         get() = mFootViews.size()
-
-
+    
     override fun getItemViewType(position: Int): Int {
         if (isHeaderViewPos(position)) {
             return mHeaderViews.keyAt(position)
         } else if (isFooterViewPos(position)) {
             return mFootViews.keyAt(position - headersCount - realItemCount)
         }
-        return if (!useItemViewDelegateManager()) super.getItemViewType(position) else mItemViewDelegateManager.getItemViewType(data[position - headersCount], position - headersCount)
+        return if (!useItemDelegateManager()) super.getItemViewType(position) else mItemDelegateManager.getItemViewType(data[position - headersCount], position - headersCount)
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (mHeaderViews.get(viewType) != null) {
-            return ViewHolder.createViewHolder(mHeaderViews.get(viewType))
+            return ViewHolder.createViewHolder(mHeaderViews.get(viewType)!!)
 
         } else if (mFootViews.get(viewType) != null) {
-            return ViewHolder.createViewHolder(mFootViews.get(viewType))
+            return ViewHolder.createViewHolder(mFootViews.get(viewType)!!)
         }
-        val itemViewDelegate = mItemViewDelegateManager.getItemViewDelegate(viewType)
+        val itemViewDelegate = mItemDelegateManager.getItemViewDelegate(viewType)
 
         val layoutId = itemViewDelegate.layoutId
         val holder = ViewHolder.createViewHolder(parent.context, parent, layoutId)
@@ -56,7 +54,7 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
     fun onViewHolderCreated(holder: ViewHolder, itemView: View) { }
 
     fun convert(holder: ViewHolder, t: T) {
-        mItemViewDelegateManager.convert(holder, t, holder.adapterPosition - headersCount)
+        mItemDelegateManager.convert(holder, t, holder.adapterPosition - headersCount)
     }
 
     protected fun isEnabled(viewType: Int): Boolean {
@@ -135,18 +133,18 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
         mFootViews.put(mFootViews.size() + BASE_ITEM_TYPE_FOOTER, view)
     }
 
-    fun addItemViewDelegate(itemViewDelegate: ItemViewDelegate<T>): MultiItemTypeAdapter<T> {
-        mItemViewDelegateManager.addDelegate(itemViewDelegate)
+    fun addItemDelegate(itemViewDelegate: ItemDelegate<T>): MultiItemTypeAdapter<T> {
+        mItemDelegateManager.addDelegate(itemViewDelegate)
         return this
     }
 
-    fun addItemViewDelegate(viewType: Int, itemViewDelegate: ItemViewDelegate<T>): MultiItemTypeAdapter<T> {
-        mItemViewDelegateManager.addDelegate(viewType, itemViewDelegate)
+    fun addItemDelegate(viewType: Int, itemViewDelegate: ItemDelegate<T>): MultiItemTypeAdapter<T> {
+        mItemDelegateManager.addDelegate(viewType, itemViewDelegate)
         return this
     }
 
-    protected fun useItemViewDelegateManager(): Boolean {
-        return mItemViewDelegateManager.itemViewDelegateCount > 0
+    protected fun useItemDelegateManager(): Boolean {
+        return mItemDelegateManager.itemViewDelegateCount > 0
     }
 
     interface OnItemClickListener {
@@ -171,4 +169,5 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
         private const val BASE_ITEM_TYPE_HEADER = 100000
         private const val BASE_ITEM_TYPE_FOOTER = 200000
     }
+    
 }

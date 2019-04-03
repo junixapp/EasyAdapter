@@ -6,19 +6,20 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.lxj.easyadapter.*
 
 import kotlinx.android.synthetic.main.activity_main.*
-
-import java.util.ArrayList
+import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
 
 class MainActivity : AppCompatActivity() {
 
     internal var userList: MutableList<User> = ArrayList()
     private var adapter: EasyAdapter<User>? = null
-    private var multiItemTypeAdapter: MultiItemTypeAdapter<*>? = null
+    private var multiItemTypeAdapter: MultiItemTypeAdapter<User>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         //prepare data
-        for (i in 0..19) {
-            userList.add(User("本杰明 - ", i * 2))
+        for (i in 0..6) {
+            userList.add(User("本杰明 - $i", i * 2, i))
         }
 
         testHeader()
@@ -35,10 +36,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun testHeader() {
-        adapter = object : EasyAdapter<User>(R.layout.item, userList) {
+        adapter = object : EasyAdapter<User>(userList, R.layout.item) {
             override fun bind(holder: ViewHolder, user: User, position: Int) {
                 with(holder) {
-                    setText(R.id.tv_name, "name: " + user.name + position)
+                    setText(R.id.tv_name, "name: " + user.name )
                     setText(R.id.tv_age, "age: " + user.age)
                 }
             }
@@ -46,35 +47,47 @@ class MainActivity : AppCompatActivity() {
             setOnItemClickListener(object : MultiItemTypeAdapter.SimpleOnItemClickListener() {
                 override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
                     super.onItemClick(view, holder, position)
-                    Toast.makeText(this@MainActivity, "item - $position", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "position - $position", Toast.LENGTH_SHORT).show()
+                    userList.removeAt(position)
+//                    notifyDataSetChanged()
+                    notifyItemRemoved(position + headersCount)
                 }
             })
-            addHeaderView(createView("Header - 1"))
-            addHeaderView(createView("Header - 2"))
-            addFootView(createView("我是Footer - 1"))
-            addFootView(createView("我是Footer - 2"))
+            addHeaderView(createView("Header - 1，点我在头部添加一条数据"))
+            addHeaderView(createView("Header - 2，点我在头部添加一条数据"))
+            addFootView(createView("Footer - 1，点我在末尾添加一条数据", true))
+            addFootView(createView("Footer - 2，点我在末尾添加一条数据", true))
             recyclerView.adapter = this
         }
     }
 
-    private fun createView(text: String): TextView {
-        val textView2 = TextView(this)
-        textView2.setPadding(80, 80, 80, 80)
-        textView2.text = text
-        textView2.setOnClickListener {
-            Toast.makeText(this@MainActivity, textView2.text.toString(), Toast.LENGTH_SHORT).show()
-            userList.add(User("刘小姐", 33))
-            if (multiItemTypeAdapter != null) multiItemTypeAdapter!!.notifyDataSetChanged()
-            if (adapter != null) adapter!!.notifyDataSetChanged()
+    private fun createView(text: String, isFooter: Boolean = false): TextView {
+        val textView = TextView(this)
+        textView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        textView.setPadding(80, 80, 80, 80)
+        textView.text = text
+        textView.setOnClickListener {
+            Toast.makeText(this@MainActivity, textView.text.toString(), Toast.LENGTH_SHORT).show()
+            val user = User()
+            user.name = "随机添加的名字 - ${System.currentTimeMillis()}"
+            user.age = System.currentTimeMillis().toInt()
+            if(isFooter){
+                //尾部添加
+                userList.add(user)
+            }else{
+                userList.add(0, user)
+            }
+            multiItemTypeAdapter?.apply { notifyItemInserted(if (isFooter) (userList.size + headersCount) else headersCount) }
+            adapter?.apply { notifyItemInserted(if (isFooter) (userList.size + headersCount) else headersCount) }
         }
-        return textView2
+        return textView
     }
 
     internal fun testMultiItem() {
-        multiItemTypeAdapter = MultiItemTypeAdapter(userList)
+        multiItemTypeAdapter = MultiItemTypeAdapter<User>(userList)
                 .apply {
-                    addItemViewDelegate(OneDelegate())
-                    addItemViewDelegate(TwoDelegate())
+                    addItemDelegate(OneDelegate())
+                    addItemDelegate(TwoDelegate())
                     addHeaderView(createView("Multi Header view1111"))
                     addHeaderView(createView("Multi Header view22222"))
                     addFootView(createView("Multi Footer view"))
@@ -91,29 +104,25 @@ class MainActivity : AppCompatActivity() {
                 }
     }
 
-    internal inner class OneDelegate : ItemViewDelegate<User> {
-
+    internal inner class OneDelegate : ItemDelegate<User> {
         override val layoutId: Int
             get() = android.R.layout.simple_list_item_1
 
-        override fun isForViewType(item: User, position: Int): Boolean {
+        override fun isThisType(item: User, position: Int): Boolean {
             return position % 2 != 0
         }
-
         override fun bind(holder: ViewHolder, user: User, position: Int) {
             holder.setText(android.R.id.text1, "name: " + user.name + " - " + position)
         }
     }
 
-    internal inner class TwoDelegate : ItemViewDelegate<User> {
-
+    internal inner class TwoDelegate : ItemDelegate<User> {
         override val layoutId: Int
             get() = android.R.layout.simple_list_item_1
 
-        override fun isForViewType(item: User, position: Int): Boolean {
+        override fun isThisType(item: User, position: Int): Boolean {
             return position % 2 == 0
         }
-
         override fun bind(holder: ViewHolder, user: User, position: Int) {
             holder.setText(android.R.id.text1, "age: " + user.age)
             holder.getView<View>(android.R.id.text1).setBackgroundColor(Color.RED)
