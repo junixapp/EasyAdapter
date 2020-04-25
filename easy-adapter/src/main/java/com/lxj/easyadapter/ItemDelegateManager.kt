@@ -1,13 +1,13 @@
 package com.lxj.easyadapter
 
-import android.support.v4.util.SparseArrayCompat
+import android.util.SparseArray
 
 
 /**
  * Created by zhy on 16/6/22.
  */
 class ItemDelegateManager<T> {
-    private var delegates: SparseArrayCompat<ItemDelegate<T>> = SparseArrayCompat()
+    private var delegates: SparseArray<ItemDelegate<T>> = SparseArray()
 
     val itemViewDelegateCount: Int
         get() = delegates.size()

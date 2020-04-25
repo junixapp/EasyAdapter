@@ -1,17 +1,17 @@
 package com.lxj.easyadapter
 
-import android.support.v4.util.SparseArrayCompat
-import android.support.v7.widget.RecyclerView
+import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by zhy on 16/4/9.
  */
 open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<ViewHolder>() {
     
-    private val mHeaderViews = SparseArrayCompat<View>()
-    private val mFootViews = SparseArrayCompat<View>()
+    private val mHeaderViews = SparseArray<View>()
+    private val mFootViews = SparseArray<View>()
 
     protected var mItemDelegateManager: ItemDelegateManager<T> = ItemDelegateManager()
     protected var mOnItemClickListener: OnItemClickListener? = null
