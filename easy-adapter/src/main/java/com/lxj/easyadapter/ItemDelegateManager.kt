@@ -81,7 +81,7 @@ class ItemDelegateManager<T> {
     }
 
     fun getItemLayoutId(viewType: Int): Int {
-        return getItemViewDelegate(viewType).layoutId
+        return getItemViewDelegate(viewType).getLayoutId()
     }
 
     fun getItemViewType(itemViewDelegate: ItemDelegate<T>): Int {

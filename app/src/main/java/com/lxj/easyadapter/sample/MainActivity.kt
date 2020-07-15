@@ -25,14 +25,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.itemAnimator = null
 
         //prepare data
         for (i in 0..6) {
             userList.add(User("本杰明 - $i", i * 2, i))
         }
 
-        testHeader()
-//        testMultiItem()
+//        testHeader()
+        testMultiItem()
     }
 
     private fun testHeader() {
@@ -105,8 +106,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     internal inner class OneDelegate : ItemDelegate<User> {
-        override val layoutId: Int
-            get() = android.R.layout.simple_list_item_1
 
         override fun isThisType(item: User, position: Int): Boolean {
             return position % 2 != 0
@@ -114,11 +113,12 @@ class MainActivity : AppCompatActivity() {
         override fun bind(holder: ViewHolder, user: User, position: Int) {
             holder.setText(android.R.id.text1, "name: " + user.name + " - " + position)
         }
+
+        override fun getLayoutId(): Int = android.R.layout.simple_list_item_1
     }
 
     internal inner class TwoDelegate : ItemDelegate<User> {
-        override val layoutId: Int
-            get() = android.R.layout.simple_list_item_1
+        override fun getLayoutId(): Int  = android.R.layout.simple_list_item_1
 
         override fun isThisType(item: User, position: Int): Boolean {
             return position % 2 == 0

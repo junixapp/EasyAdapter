@@ -5,7 +5,7 @@ package com.lxj.easyadapter
  */
 interface ItemDelegate<T> {
 
-    val layoutId: Int
+    fun getLayoutId(): Int
 
     fun isThisType(item: T, position: Int): Boolean
 

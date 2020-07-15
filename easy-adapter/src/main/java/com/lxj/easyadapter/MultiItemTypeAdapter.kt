@@ -44,7 +44,7 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
         }
         val itemViewDelegate = mItemDelegateManager.getItemViewDelegate(viewType)
 
-        val layoutId = itemViewDelegate.layoutId
+        val layoutId = itemViewDelegate.getLayoutId()
         val holder = ViewHolder.createViewHolder(parent.context, parent, layoutId)
         onViewHolderCreated(holder, holder.convertView)
         setListener(parent, holder, viewType)

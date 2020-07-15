@@ -8,9 +8,6 @@ abstract class EasyAdapter<T>(data: List<T>, protected var mLayoutId: Int) : Mul
 
     init {
         addItemDelegate(object : ItemDelegate<T> {
-            override val layoutId: Int
-                get() = mLayoutId
-
             override fun isThisType(item: T, position: Int): Boolean {
                 return true
             }
@@ -18,6 +15,8 @@ abstract class EasyAdapter<T>(data: List<T>, protected var mLayoutId: Int) : Mul
             override fun bind(holder: ViewHolder, t: T, position: Int) {
                 this@EasyAdapter.bind(holder, t, position)
             }
+
+            override fun getLayoutId() = mLayoutId
         })
     }
 
