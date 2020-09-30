@@ -21,15 +21,24 @@ class ViewHolder(val convertView: View) : RecyclerView.ViewHolder(convertView) {
         return view as T
     }
 
+    fun <T : View> getView2(viewId: Int): T? {
+        var view: View? = mViews.get(viewId)
+        if (view == null) {
+            view = convertView.findViewById(viewId)
+            mViews.put(viewId, view)
+        }
+        return view as? T
+    }
+
     fun setText(viewId: Int, text: CharSequence): ViewHolder {
         val tv = getView<TextView>(viewId)
-        tv.text = text
+        tv?.text = text
         return this
     }
 
     fun setImageResource(viewId: Int, resId: Int): ViewHolder {
         val view = getView<ImageView>(viewId)
-        view.setImageResource(resId)
+        view?.setImageResource(resId)
         return this
     }
 
