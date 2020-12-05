@@ -26,9 +26,7 @@ object WrapperUtils {
 
     fun setFullSpan(holder: RecyclerView.ViewHolder) {
         val lp = holder.itemView.layoutParams
-
         if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams) {
-
             lp.isFullSpan = true
         }
     }

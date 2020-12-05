@@ -21,7 +21,7 @@ class ViewHolder(val convertView: View) : RecyclerView.ViewHolder(convertView) {
         return view as T
     }
 
-    fun <T : View> getView2(viewId: Int): T? {
+    fun <T : View> getViewOrNull(viewId: Int): T? {
         var view: View? = mViews.get(viewId)
         if (view == null) {
             view = convertView.findViewById(viewId)
