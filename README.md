@@ -4,10 +4,21 @@ An simplify and powerful version for hongyangAndroid [baseAdapter].
 I remove some class, change some api, rewrite code, to be more simple, support kotlin.
 
 # Gradle
-[ ![Download](https://api.bintray.com/packages/li-xiaojun/jrepo/easyadapter/images/download.svg) ](https://bintray.com/li-xiaojun/jrepo/easyadapter/_latestVersion)
+[![](https://jitpack.io/v/li-xiaojun/EasyAdapter.svg)](https://jitpack.io/#li-xiaojun/EasyAdapter)
 ```groovy
-implementation 'com.lxj:easyadapter:latest release'
+implementation 'com.github.li-xiaojun:EasyAdapter:Tag'
 ```
+
+Add it in your root build.gradle at the end of repositories:
+```
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
 
 # Sample
 普通使用：
