@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 28
@@ -34,13 +33,13 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-publish {
-    userOrg = 'li-xiaojun'
-    groupId = 'com.lxj'
-    artifactId = 'easyadapter'
-    publishVersion = '1.2.3'
-    repoName = 'jrepo'
-    desc = 'An simpify version for hongyangAndroid baseAdapter!'
-    website = 'https://github.com/li-xiaojun/EasyAdapter'
-}
+//publish {
+//    userOrg = 'li-xiaojun'
+//    groupId = 'com.lxj'
+//    artifactId = 'easyadapter'
+//    publishVersion = '1.2.3'
+//    repoName = 'jrepo'
+//    desc = 'An simpify version for hongyangAndroid baseAdapter!'
+//    website = 'https://github.com/li-xiaojun/EasyAdapter'
+//}
 
