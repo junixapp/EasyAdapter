@@ -53,8 +53,8 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
 
     fun onViewHolderCreated(holder: ViewHolder, itemView: View) { }
 
-    fun convert(holder: ViewHolder, t: T) {
-        mItemDelegateManager.convert(holder, t, holder.adapterPosition - headersCount)
+    fun convert(holder: ViewHolder, t: T, payloads: List<Any>? = null) {
+        mItemDelegateManager.convert(holder, t, holder.adapterPosition - headersCount, payloads)
     }
 
     protected fun isEnabled(viewType: Int): Boolean {
@@ -88,6 +88,16 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
             return
         }
         convert(holder, data[position - headersCount])
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: List<Any>) {
+        if (isHeaderViewPos(position)) {
+            return
+        }
+        if (isFooterViewPos(position)) {
+            return
+        }
+        convert(holder, data[position - headersCount], payloads)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

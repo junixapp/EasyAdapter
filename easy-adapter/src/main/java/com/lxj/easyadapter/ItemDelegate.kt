@@ -11,4 +11,9 @@ interface ItemDelegate<T> {
 
     fun bind(holder: ViewHolder, t: T, position: Int)
 
+    fun bindWithPayloads(holder: ViewHolder, t: T, position: Int, payloads: List<Any>) {
+        bind(holder, t, position)
+    }
+
+
 }

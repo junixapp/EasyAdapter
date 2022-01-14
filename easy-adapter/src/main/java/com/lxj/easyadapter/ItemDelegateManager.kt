@@ -61,18 +61,22 @@ class ItemDelegateManager<T> {
                 "No ItemDelegate added that matches position=$position in data source")
     }
 
-    fun convert(holder: ViewHolder, item: T, position: Int) {
+    fun convert(holder: ViewHolder, item: T, position: Int, payloads: List<Any>? = null) {
         val delegatesCount = delegates.size()
         for (i in 0 until delegatesCount) {
             val delegate = delegates.valueAt(i)
 
             if (delegate.isThisType(item, position)) {
-                delegate.bind(holder, item, position)
+                if (payloads.isNullOrEmpty()){
+                    delegate.bind(holder, item, position)
+                }else{
+                    delegate.bindWithPayloads(holder, item, position, payloads)
+                }
                 return
             }
         }
-        throw IllegalArgumentException(
-                "No ItemDelegateManager added that matches position=$position in data source")
+//        throw IllegalArgumentException(
+//                "No ItemDelegateManager added that matches position=$position in data source")
     }
 
 
