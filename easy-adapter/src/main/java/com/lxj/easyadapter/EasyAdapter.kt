@@ -16,10 +16,19 @@ abstract class EasyAdapter<T>(data: List<T>, protected var mLayoutId: Int) : Mul
                 this@EasyAdapter.bind(holder, t, position)
             }
 
+            override fun bindWithPayloads(holder: ViewHolder, t: T,
+                position: Int, payloads: List<Any>) {
+                this@EasyAdapter.bindWithPayloads(holder, t, position, payloads)
+            }
+
             override fun getLayoutId() = mLayoutId
         })
     }
 
     protected abstract fun bind(holder: ViewHolder, t: T, position: Int)
+
+    protected open fun bindWithPayloads(holder: ViewHolder, t: T, position: Int, payloads: List<Any>) {
+        bind(holder, t, position)
+    }
 
 }

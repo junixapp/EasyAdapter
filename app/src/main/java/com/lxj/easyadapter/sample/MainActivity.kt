@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                     setText(R.id.tv_age, "age: " + user.age)
                 }
             }
+
         }.apply {
             setOnItemClickListener(object : MultiItemTypeAdapter.SimpleOnItemClickListener() {
                 override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
