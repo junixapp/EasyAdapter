@@ -16,7 +16,7 @@ class UserDiffCallback(var oldData: List<User>?, var newData: List<User>?) : Dif
        return oldData!![oldItemPosition].name == newData!![newItemPosition].name
     }
 
-    //局部更新 areItemsTheSame为true && areContentsTheSame==false 调用
+    //局部更新 areItemsTheSame==true && areContentsTheSame==false 调用
     override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
         val oldItem = oldData!![oldItemPosition]
         val newItem = newData!![newItemPosition]

@@ -57,8 +57,9 @@ class ItemDelegateManager<T> {
                 return delegates.keyAt(i)
             }
         }
-        throw IllegalArgumentException(
-                "No ItemDelegate added that matches position=$position in data source")
+        return 0
+//        throw IllegalArgumentException(
+//                "No ItemDelegate added that matches position=$position in data source")
     }
 
     fun convert(holder: ViewHolder, item: T, position: Int, payloads: List<Any>? = null) {

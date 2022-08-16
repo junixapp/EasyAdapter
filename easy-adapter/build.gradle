@@ -32,14 +32,3 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-
-//publish {
-//    userOrg = 'li-xiaojun'
-//    groupId = 'com.lxj'
-//    artifactId = 'easyadapter'
-//    publishVersion = '1.2.3'
-//    repoName = 'jrepo'
-//    desc = 'An simpify version for hongyangAndroid baseAdapter!'
-//    website = 'https://github.com/li-xiaojun/EasyAdapter'
-//}
-

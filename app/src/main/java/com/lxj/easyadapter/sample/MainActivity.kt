@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         multiItemTypeAdapter = MultiItemTypeAdapter<User>(userList)
                 .apply {
                     addItemDelegate(OneDelegate())
-//                    addItemDelegate(TwoDelegate())
+                    addItemDelegate(TwoDelegate())
 //                    addHeaderView(createView("Multi Header view1111"))
 //                    addHeaderView(createView("Multi Header view22222"))
 //                    addFootView(createView("Multi Footer view"))
@@ -165,8 +165,7 @@ class MainActivity : AppCompatActivity() {
     internal inner class OneDelegate : ItemDelegate<User> {
 
         override fun isThisType(item: User, position: Int): Boolean {
-            return true
-//            return position % 2 != 0
+            return position < 2
         }
         override fun bind(holder: ViewHolder, user: User, position: Int) {
             holder.setText(R.id.name, user.name)
@@ -179,12 +178,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         //布局更新
-        override fun bindWithPayloads(
-            holder: ViewHolder,
-            t: User,
-            position: Int,
-            payloads: List<Any>
-        ) {
+        override fun bindWithPayloads(holder: ViewHolder, t: User,
+            position: Int, payloads: List<Any>) {
             if(payloads.isNullOrEmpty()) return
             val bundle = payloads[0] as Bundle
             val name = bundle.getString("name") ?: ""
@@ -200,7 +195,7 @@ class MainActivity : AppCompatActivity() {
         override fun getLayoutId(): Int  = android.R.layout.simple_list_item_1
 
         override fun isThisType(item: User, position: Int): Boolean {
-            return position % 2 == 0
+            return position >=2
         }
         override fun bind(holder: ViewHolder, user: User, position: Int) {
             holder.setText(android.R.id.text1, "age: " + user.age)
