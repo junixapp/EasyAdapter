@@ -9,13 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ViewHolder(val convertView: View) : RecyclerView.ViewHolder(convertView) {
+class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val mViews: SparseArray<View> = SparseArray()
 
     fun <T : View> getView(viewId: Int): T {
         var view: View? = mViews.get(viewId)
         if (view == null) {
-            view = convertView.findViewById(viewId)
+            view = itemView.findViewById(viewId)
             mViews.put(viewId, view)
         }
         return view as T
@@ -24,20 +24,20 @@ class ViewHolder(val convertView: View) : RecyclerView.ViewHolder(convertView) {
     fun <T : View> getViewOrNull(viewId: Int): T? {
         var view: View? = mViews.get(viewId)
         if (view == null) {
-            view = convertView.findViewById(viewId)
+            view = itemView.findViewById(viewId)
             mViews.put(viewId, view)
         }
         return view as? T
     }
 
     fun setText(viewId: Int, text: CharSequence): ViewHolder {
-        val tv = getView<TextView>(viewId)
+        val tv = getViewOrNull<TextView>(viewId)
         tv?.text = text
         return this
     }
 
     fun setImageResource(viewId: Int, resId: Int): ViewHolder {
-        val view = getView<ImageView>(viewId)
+        val view = getViewOrNull<ImageView>(viewId)
         view?.setImageResource(resId)
         return this
     }

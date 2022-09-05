@@ -46,7 +46,7 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
 
         val layoutId = itemViewDelegate.getLayoutId()
         val holder = ViewHolder.createViewHolder(parent.context, parent, layoutId)
-        onViewHolderCreated(holder, holder.convertView)
+        onViewHolderCreated(holder, holder.itemView)
         setListener(parent, holder, viewType)
         return holder
     }
@@ -64,14 +64,14 @@ open class MultiItemTypeAdapter<T>(var data: List<T>) : RecyclerView.Adapter<Vie
 
     protected fun setListener(parent: ViewGroup, viewHolder: ViewHolder, viewType: Int) {
         if (!isEnabled(viewType)) return
-        viewHolder.convertView.setOnClickListener { v ->
+        viewHolder.itemView.setOnClickListener { v ->
             if (mOnItemClickListener != null) {
                 val position = viewHolder.adapterPosition - headersCount
                 mOnItemClickListener!!.onItemClick(v, viewHolder, position)
             }
         }
 
-        viewHolder.convertView.setOnLongClickListener(View.OnLongClickListener { v ->
+        viewHolder.itemView.setOnLongClickListener(View.OnLongClickListener { v ->
             if (mOnItemClickListener != null) {
                 val position = viewHolder.adapterPosition - headersCount
                 return@OnLongClickListener mOnItemClickListener!!.onItemLongClick(v, viewHolder, position)

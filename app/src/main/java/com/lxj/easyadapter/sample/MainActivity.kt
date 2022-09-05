@@ -9,10 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.CloneUtils
 import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.LogUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -43,6 +45,8 @@ class MainActivity : AppCompatActivity() {
         userList.add(User(name = "都是"))
         userList.add(User(name = "CEAD"))
         userList.add(User(name = "大图"))
+        userList.add(User(name = "大图11111"))
+        userList.add(User(name = "大图111122222"))
         add.setOnClickListener {
             val old = deepCopy()
             val range = (0 until userList.size)
@@ -76,7 +80,16 @@ class MainActivity : AppCompatActivity() {
             userList.reverse()
             DiffUtil.calculateDiff(UserDiffCallback(old, userList)).dispatchUpdatesTo(recyclerView.adapter!!)
         }
-        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, 3).apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+                override fun getSpanSize(position: Int): Int {
+                    LogUtils.e("posi: $position   count: ${if(position <1) 1 else 3}")
+                    return if(position <1) 3 else 1
+                }
+
+            }
+        }
 
         //prepare data
 //        for (i in 0..6) {
@@ -198,7 +211,7 @@ class MainActivity : AppCompatActivity() {
             return position >=2
         }
         override fun bind(holder: ViewHolder, user: User, position: Int) {
-            holder.setText(android.R.id.text1, "age: " + user.age)
+            holder.setText(android.R.id.text1, "age: " + position)
             holder.getView<View>(android.R.id.text1).setBackgroundColor(Color.RED)
         }
     }

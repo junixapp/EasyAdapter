@@ -20,7 +20,7 @@ object WrapperUtils {
                     return fn(layoutManager, spanSizeLookup, position)
                 }
             }
-            layoutManager.spanCount = layoutManager.spanCount
+//            layoutManager.spanCount = layoutManager.spanCount
         }
     }
 
